@@ -113,6 +113,20 @@ func On(things ...interface{}) {
 	}
 }
 
+// Off clears event handlers handlers. Takes a string or a slice of strings.
+func Off(things ...interface{}) {
+	for _, thing := range things {
+		if value, ok := thing.(string); ok {
+			delete(eventStream.eventHandlers, value)
+		}
+		if value, ok := thing.([]string); ok {
+			for _, name := range value {
+				delete(eventStream.eventHandlers, name)
+			}
+		}
+	}
+}
+
 // convertTermboxKeyValue converts a termbox keyboard event to a more friendly string format.
 // Combines modifiers into the string instead of having them as additional fields in an event.
 func convertTermboxKeyValue(e tb.Event) string {
